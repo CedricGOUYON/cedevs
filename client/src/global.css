@@ -1,0 +1,53 @@
+@import url("https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&display=swap");
+
+/* Reset de base */
+* {
+	box-sizing: border-box;
+}
+
+:root {
+	/* --- COLORS --- */
+	--gold-color: #ffd700;
+	--teal-color: #008080;
+	--teal-dark-color: #004d4d;
+	--white-color: #f1f4f9;
+
+	/* --- SPACING --- */
+	--spacing: 20px;
+	--spacing-sm: calc(var(--spacing) / 2);
+	--spacing-lg: calc(var(--spacing) * 2);
+
+	/* --- TYPOGRAPHY --- */
+	--font-main: "Baloo 2", cursive;
+}
+
+body {
+	margin: 0;
+	background-color: var(--white-color);
+	color: var(--teal-color);
+	font-family: var(--font-main);
+	line-height: 1.6;
+}
+
+/* --- ANIMATIONS --- */
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}

@@ -1,0 +1,25 @@
+{
+	"name": "projet",
+	"version": "1.0.0",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "docker ps -q --filter \"expose=5432\" --filter \"publish=5433\" | xargs -r docker stop && docker-compose down --remove-orphans && docker-compose up -d && sleep 3 && concurrently -c \"magenta,cyan\" -t \"HH:mm:ss\" -p \"[{name} {time}]\" \"npm run dev:server\" \"npm run dev:client\"",
+		"start:apps": "concurrently -c \"magenta,cyan\" -t \"HH:mm:ss\" -p \"[{name} {time}]\" -n \"API,APP\" \"npm run dev:server\" \"npm run dev:client\"",
+		"dev:server": "npm run dev --prefix server",
+		"dev:client": "npm run dev --prefix client -- --host",
+		"db:init": "npx tsx server/database/init-db.ts",
+		"build:client": "npm run build --prefix client",
+		"start": "npm run start --prefix server",
+		"setup": "node setup/update-package-name.js",
+		"postinstall": "npm run setup",
+		"setup:project": "node setup/update-package-name.js",
+		"render-build": "npm install --prefix client && npm run build --prefix client && npm run build --prefix server"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.3.9",
+		"@vitejs/plugin-react": "^5.1.2",
+		"concurrently": "^9.2.1",
+		"vite": "^7.2.4"
+	}
+}

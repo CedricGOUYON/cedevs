@@ -1,0 +1,24 @@
+.header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 1000;
+	display: flex;
+	align-items: center;
+	padding: 14px 24px;
+	height: 72px;
+	background: linear-gradient(
+		135deg,
+		var(--teal-color) 0%,
+		var(--teal-dark-color) 100%
+	);
+	color: var(--white-color);
+}
+
+.header .left-side h1 {
+	font-size: 20px;
+	font-weight: bold;
+	margin: 0;
+	color: inherit;
+}
