@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./HomePage.css";
 
 interface RealisationImage {
@@ -29,7 +29,7 @@ const realisationSections: RealisationSection[] = [
 			{ src: "/photos/Logo - Unéo85.png", alt: "logo-uneo85", caption: "Logo Unéo85" },
 			{ src: "/photos/Logo - Pack And Go.png", alt: "logo-pack-and-go", caption: "Logo Pack And Go" },
 			{ src: "/photos/Logo - StreamFlix.png", alt: "logo-streamflix", caption: "Logo StreamFlix" },
-			{ src: "/Photos/Logo - Tealii.png", alt: "logo-tealii", caption: "Logo Tealii" },
+			{ src: "/photos/Logo - Tealii.png", alt: "logo-tealii", caption: "Logo Tealii" },
 		],
 	},
 	{
@@ -83,7 +83,6 @@ const realisationSections: RealisationSection[] = [
 		title: "Les mockups",
 		subtitle: "Visualisation des créations avant même de les valider",
 		images: [
-
 			{ src: "/photos/Mockup - Binome - Bureatique.png", alt: "mockup-binome-bureatique", caption: "Mockup Binome Bureatique" },
 			{ src: "/photos/Mockup - Binome - Mobile.png", alt: "mockup-binome-mobile", caption: "Mockup Binome Mobile" },
 			{ src: "/photos/Mockup - Binome - Polo Blanc.png", alt: "mockup-binome-polo-blanc", caption: "Mockup Binome Polo Blanc" },
@@ -126,7 +125,6 @@ const realisationSections: RealisationSection[] = [
 			{ src: "/photos/Cv - Gouyon Cédric.png", alt: "cv-gouyon-cedric", caption: "Cv Gouyon Cédric" },
 		],
 	},
-
 ];
 
 interface LightboxProps {
@@ -141,27 +139,44 @@ function Lightbox({ images, currentIndex, onClose, onPrev, onNext }: LightboxPro
 	const img = images[currentIndex];
 
 	return (
-		<div className="hp-lightbox" onClick={onClose} role="dialog" aria-modal="true" aria-label="Aperçu image">
+		<div
+			className="hp-lightbox"
+			onClick={onClose}
+			onKeyDown={(e) => {
+				if (e.key === "Escape") onClose();
+			}}
+			role="dialog"
+			aria-modal="true"
+			aria-label="Aperçu image"
+		>
 			<button type="button" className="hp-lightbox__close" onClick={onClose} aria-label="Fermer">
 				✕
 			</button>
 			<button
 				type="button"
 				className="hp-lightbox__nav hp-lightbox__nav--prev"
-				onClick={(e) => { e.stopPropagation(); onPrev(); }}
+				onClick={(e) => {
+					e.stopPropagation();
+					onPrev();
+				}}
 				aria-label="Image précédente"
 			>
 				&#8592;
 			</button>
-			<figure className="hp-lightbox__content" onClick={(e) => e.stopPropagation()}>
+			<figure className="hp-lightbox__content" onClick={(e) => e.stopPropagation()} onKeyDown={(e) => e.stopPropagation()}>
 				<img src={img.src} alt={img.alt} className="hp-lightbox__img" />
 				{img.caption && <figcaption className="hp-lightbox__caption">{img.caption}</figcaption>}
-				<span className="hp-lightbox__counter">{currentIndex + 1} / {images.length}</span>
+				<span className="hp-lightbox__counter">
+					{currentIndex + 1} / {images.length}
+				</span>
 			</figure>
 			<button
 				type="button"
 				className="hp-lightbox__nav hp-lightbox__nav--next"
-				onClick={(e) => { e.stopPropagation(); onNext(); }}
+				onClick={(e) => {
+					e.stopPropagation();
+					onNext();
+				}}
 				aria-label="Image suivante"
 			>
 				&#8594;
@@ -195,14 +210,15 @@ function Gallery({ section }: { section: RealisationSection }) {
 
 			<div className="hp-gallery">
 				{section.images.map((img, idx) => (
-					<figure
+					<button
 						key={img.alt}
 						className="hp-gallery__item"
 						onClick={() => openLightbox(idx)}
-						role="button"
-						tabIndex={0}
+						type="button"
 						aria-label={`Ouvrir ${img.caption ?? img.alt}`}
-						onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") openLightbox(idx); }}
+						onKeyDown={(e) => {
+							if (e.key === "Enter" || e.key === " ") openLightbox(idx);
+						}}
 					>
 						<div className="hp-gallery__img-wrap">
 							<img
@@ -225,19 +241,11 @@ function Gallery({ section }: { section: RealisationSection }) {
 							</div>
 						</div>
 						{img.caption && <figcaption className="hp-gallery__caption">{img.caption}</figcaption>}
-					</figure>
+					</button>
 				))}
 			</div>
 
-			{lightboxIndex !== null && (
-				<Lightbox
-					images={section.images}
-					currentIndex={lightboxIndex}
-					onClose={closeLightbox}
-					onPrev={prevImage}
-					onNext={nextImage}
-				/>
-			)}
+			{lightboxIndex !== null && <Lightbox images={section.images} currentIndex={lightboxIndex} onClose={closeLightbox} onPrev={prevImage} onNext={nextImage} />}
 		</section>
 	);
 }
@@ -270,7 +278,8 @@ function HomePage() {
 						pour valoriser son image
 					</h1>
 					<p className="hp-hero__sub">
-						Passionné de graphisme et autodidacte actif, J'adore donner vie aux idées à travers la conception d’identités visuelles et de supports print et digitaux. Que ce soit pour un logo, une carte de visite, un flyer ou des publications pour les réseaux sociaux, je crée des visuels en fonction des besoins et des envies. De la couverture de catalogue aux objets publicitaires, j'aime mettre mon énergie pour booster et faire briller la communication.
+						Passionné de graphisme et autodidacte actif, J'adore donner vie aux idées à travers la conception d’identités visuelles et de supports print et digitaux. Que ce soit pour un logo, une carte de visite, un flyer ou des publications pour les réseaux sociaux, je crée des visuels en fonction des besoins et des
+						envies. De la couverture de catalogue aux objets publicitaires, j'aime mettre mon énergie pour booster et faire briller la communication.
 					</p>
 				</header>
 			</section>
@@ -286,16 +295,11 @@ function HomePage() {
 					<header>
 						<h2>Mon travail ne s'arrête pas qu'à une seule solution graphique.</h2>
 						<span className="hp-hero__title-accent">
-  Découvrez aussi mon second univers :{' '}
-  <a
-    href="https://gouyon-cedric.onrender.com/"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="hero-link"
-  >
-    Le développement web
-  </a>
-</span>
+							Découvrez aussi mon second univers :{" "}
+							<a href="https://gouyon-cedric.onrender.com/" target="_blank" rel="noopener noreferrer" className="hero-link">
+								Le développement web
+							</a>
+						</span>
 					</header>
 				</div>
 			</section>
