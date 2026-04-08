@@ -1,0 +1,121 @@
+/* ──────────────────────────────────────────
+   TOKENS
+────────────────────────────────────────── */
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap");
+
+:root {
+	/* Colors */
+	--accent: #006666;
+	--accent-dark: #005959;
+	--accent-mid: #009999;
+	--accent-light: #e0f0f0;
+	--accent-glow: rgba(0, 102, 102, 0.12);
+
+	/* Backgrounds */
+	--bg: #f7fafa;
+	--bg2: #ffffff;
+	--bg3: #eef5f5;
+
+	/* Borders */
+	--border: #ddeaea;
+
+	/* Text */
+	--text: #0f1f1f;
+	--muted: #5a7070;
+	--white: #ffffff;
+
+	/* Layout */
+	--radius: 12px;
+	--spacing-sm: 1rem;
+	--spacing-md: 2rem;
+
+	/* Fonts */
+	--font-sans: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
+	--font-mono: "Space Mono", monospace;
+}
+
+/* ──────────────────────────────────────────
+   RESET
+────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+	min-height: 100vh;
+	width: 100%;
+}
+
+body {
+	font-family: var(--font-sans);
+	color: var(--text);
+	background: var(--bg);
+}
+
+/* ──────────────────────────────────────────
+   LAYOUT
+────────────────────────────────────────── */
+.app-wrapper {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+.main-content {
+	flex: 1;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+/* ──────────────────────────────────────────
+   HEADER
+────────────────────────────────────────── */
+.header {
+	background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+	color: var(--white);
+	padding: var(--spacing-sm) var(--spacing-md);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.header-logo {
+	color: var(--white);
+	text-decoration: none;
+	font-weight: 700;
+}
+
+.header-nav {
+	display: flex;
+	gap: var(--spacing-sm);
+}
+
+.header-nav-link {
+	color: var(--white);
+	text-decoration: none;
+	border-bottom: 2px solid transparent;
+}
+
+.header-nav-link:hover {
+	border-bottom: 2px solid var(--white);
+}
+
+/* ──────────────────────────────────────────
+   FOOTER
+────────────────────────────────────────── */
+.footer {
+	background: var(--accent-dark);
+	color: var(--white);
+	padding: var(--spacing-sm);
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	gap: var(--spacing-sm);
+}
