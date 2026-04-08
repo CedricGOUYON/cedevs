@@ -6,7 +6,7 @@ function Footer() {
 	return (
 		<footer className="footer">
 			<strong>{constants.APP_NAME}</strong>
-			<p>monorepo web et mobile</p>
+
 			<p>© {year}</p>
 		</footer>
 	);

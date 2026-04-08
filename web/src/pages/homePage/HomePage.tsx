@@ -1,574 +1,302 @@
-import { useState } from "react";
-import { Link } from "react-router";
-import { constants } from "../../../../setup/constants";
+import { useState, useEffect } from "react";
 import "./HomePage.css";
 
-interface Module {
-	id: string;
-	title: string;
-	description: string;
+interface RealisationImage {
+	src: string;
+	alt: string;
+	caption?: string;
 }
 
-interface Chapter {
+interface RealisationSection {
 	id: string;
 	title: string;
-	desc: string;
-	modules: Module[];
+	subtitle: string;
+	images: RealisationImage[];
 }
 
-const chapters: Chapter[] = [
+const realisationSections: RealisationSection[] = [
 	{
-		id: "01",
-		title: "Monorepo & Structure",
-		desc: "npm workspaces, TypeScript strict, Biome, structure packages web/mobile/backend/shared.",
-		modules: [
-			{
-				id: "t-01",
-				title: "Création d'un monorepo",
-				description: "Initialisation de la structure monorepo avec npm workspaces",
-			},
-			{
-				id: "t-02",
-				title: "Structure frontend",
-				description: "Configuration React avec Router, Layout et pages",
-			},
-			{
-				id: "t-03",
-				title: "Structure backend",
-				description: "Serveur Express avec routes et contrôleurs",
-			},
+		id: "Les logos",
+		title: "Les logos",
+		subtitle: "Identités visuelles qui marquent les esprits",
+		images: [
+			{ src: "src/assets/photos/Logo - Monts Plan.jpg", alt: "logo-monts-plan", caption: "Logo Monts Plan" },
+			{ src: "src/assets/photos/Logo - Cote & Villa.png", alt: "logo-cote-villa", caption: "Logo Cote & Villa" },
+			{ src: "src/assets/photos/Logo - Atelier Taka.png", alt: "logo-atelier-taka", caption: "Logo Atelier Taka" },
+			{ src: "src/assets/photos/Logo - les petites Mains.png", alt: "logo-les-petites-mains", caption: "Logo les petites Mains" },
+			{ src: "src/assets/photos/Logo - Sare Photos.png", alt: "logo-sare-photos", caption: "Logo Sare Photos" },
+			{ src: "src/assets/photos/Logo - Teet Brigitte.png", alt: "logo-teet-brigitte", caption: "Logo Teet Brigitte" },
+			{ src: "src/assets/photos/Logo - Unéo85.png", alt: "logo-uneo85", caption: "Logo Unéo85" },
+			{ src: "src/assets/photos/Logo - Pack And Go.png", alt: "logo-pack-and-go", caption: "Logo Pack And Go" },
+			{ src: "src/assets/photos/Logo - StreamFlix.png", alt: "logo-streamflix", caption: "Logo StreamFlix" },
+			{ src: "src/assets/Photos/Logo - Tealii.png", alt: "logo-tealii", caption: "Logo Tealii" },
 		],
 	},
 	{
-		id: "02",
-		title: "Base de données",
-		desc: "PostgreSQL + migrations SQL, modèles typés, query builder.",
-		modules: [
-			{
-				id: "t-04",
-				title: "Base de données",
-				description: "Configuration PostgreSQL et migrations",
-			},
+		id: "Les cartes de visite",
+		title: "Les cartes de visite",
+		subtitle: "Première impression inoubliable, à portée de main",
+		images: [
+			{ src: "src/assets/photos/Carte de visite - Cédric Gouyon.jpg", alt: "carte-visite-cedric-gouyon", caption: "Carte de visite Cédric Gouyon" },
+			{ src: "src/assets/photos/Carte de visite - Cote & villa.png", alt: "carte-visite-cote-villa", caption: "Carte de visite Cote & villa" },
+			{ src: "src/assets/photos/Carte de visite - Monts plan 1.jpg", alt: "carte-visite-monts-plan-1", caption: "Carte de visite Monts plan 1" },
+			{ src: "src/assets/photos/Carte de visite - Monts plan 2.jpg", alt: "carte-visite-monts-plan-2", caption: "Carte de visite Monts plan 2" },
+			{ src: "src/assets/photos/Carte de visite - Net Toit Mousse.png", alt: "carte-visite-net-toit-mousse", caption: "Carte de visite Net Toit Mousse" },
+			{ src: "src/assets/photos/Carte de viste - Avo travaux.png", alt: "carte-viste-avo-travaux", caption: "Carte de visite Avo travaux" },
+			{ src: "src/assets/photos/Carte de visite - Avo travaux - FFCT.png", alt: "carte-de-visite-avo-travaux-ffct", caption: "Carte de visite Avo travaux FFCT" },
 		],
 	},
 	{
-		id: "03",
-		title: "Authentification",
-		desc: "Inscription, connexion JWT, sessions, OAuth GitHub, routes protégées.",
-		modules: [
-			{
-				id: "t-05",
-				title: "Inscription",
-				description: "Système d'enregistrement utilisateur avec validation",
-			},
-			{
-				id: "t-06",
-				title: "Connexion",
-				description: "Authentification avec JWT et sessions",
-			},
-			{
-				id: "t-07",
-				title: "Logout et session",
-				description: "Gestion de la déconnexion et des sessions",
-			},
-			{
-				id: "t-08",
-				title: "Routes protégées",
-				description: "Middleware de protection et redirection",
-			},
-			{
-				id: "t-18",
-				title: "GitHub OAuth",
-				description: "Authentification via GitHub",
-			},
+		id: "Les flyers",
+		title: "Les flyers",
+		subtitle: "Des supports print qui captivent ",
+		images: [
+			{ src: "src/assets/photos/Flyer - Avo travaux.png", alt: "flyer-avo-travaux", caption: "Flyer Avo travaux" },
+			{ src: "src/assets/photos/Flyer - Cartable - Collecte vetements.png", alt: "flyer-cartable-collecte-vetements", caption: "Flyer Cartable Collecte vetements" },
+			{ src: "src/assets/photos/Flyer - Cartable - Pac 2.png", alt: "flyer-cartable-pac-2", caption: "Flyer Cartable Pac 2" },
+			{ src: "src/assets/photos/Flyer - Cartable - Pac.png", alt: "flyer-cartable-pac", caption: "Flyer Cartable Pac" },
+			{ src: "src/assets/photos/Flyer - Les Petites Mains - Basketball.png", alt: "flyer-les-petites-mains-basketball", caption: "Flyer Les Petites Mains Basketball" },
+			{ src: "src/assets/photos/Flyer - Les Petites Mains - Financement.png", alt: "flyer-les-petites-mains-financement", caption: "Flyer Les Petites Mains Financement" },
+			{ src: "src/assets/photos/Flyer - Les Petites Mains - Marche de noel.png", alt: "flyer-les-petites-mains-marche-de-noel", caption: "Flyer Les Petites Mains Marche de noel" },
+			{ src: "src/assets/photos/Flyer - Les Petites Mains - Ouverture.png", alt: "flyer-les-petites-mains-ouverture", caption: "Flyer Les Petites Mains Ouverture" },
+			{ src: "src/assets/photos/Flyer - Monts  Plan.png", alt: "flyer-monts-plan", caption: "Flyer Monts Plan" },
+			{ src: "src/assets/photos/Flyer - Net Toit Mousse.png", alt: "flyer-net-toit-mousse", caption: "Flyer Net Toit Mousse" },
+			{ src: "src/assets/photos/Flyer - Taf&co 1.png", alt: "flyer-tafco-1", caption: "Flyer Taf&co 1" },
+			{ src: "src/assets/photos/Flyer - Taf&co 2.png", alt: "flyer-tafco-2", caption: "Flyer Taf&co 2" },
+			{ src: "src/assets/photos/Flyer - Taf&co 3.png", alt: "flyer-tafco-3", caption: "Flyer Taf&co 3" },
+			{ src: "src/assets/photos/Flyer - Unéo85 - Jeune Talents.jpg", alt: "flyer-uneo85-jeune-talents", caption: "Flyer Unéo85 Jeune Talents" },
+			{ src: "src/assets/photos/Flyer - Unéo85-  Job dating.png", alt: "flyer-uneo85-job-dating", caption: "Flyer Unéo85 Job dating" },
 		],
 	},
 	{
-		id: "04",
-		title: "CRUD & Profils",
-		desc: "Dashboard utilisateur, édition profil, upload avatar, pagination.",
-		modules: [
-			{
-				id: "t-09",
-				title: "Dashboard",
-				description: "Page d'accueil utilisateur connecté",
-			},
-			{
-				id: "t-10",
-				title: "Profil et édition",
-				description: "Page de profil avec formulaire d'édition",
-			},
-			{
-				id: "t-11",
-				title: "Upload avatar",
-				description: "Téléchargement et stockage d'images",
-			},
-			{
-				id: "t-12",
-				title: "Read (CRUD)",
-				description: "Lecture des données avec pagination",
-			},
-			{
-				id: "t-13",
-				title: "Create (CRUD)",
-				description: "Création de nouvelles ressources",
-			},
-			{
-				id: "t-14",
-				title: "Update (CRUD)",
-				description: "Modification des ressources existantes",
-			},
-			{
-				id: "t-15",
-				title: "Delete (CRUD)",
-				description: "Suppression sécurisée des ressources",
-			},
+		id: "Les couvertures",
+		title: "Les couvertures",
+		subtitle: "Des couvertures qui donnent envie d'aller plus loin",
+		images: [
+			{ src: "src/assets/photos/Couverture - Unéo85 - Juillet.png", alt: "couverture-uneo85-juillet", caption: "Couverture Unéo85 Juillet" },
+			{ src: "src/assets/photos/Couverture - Unéo85 - Novembre.png", alt: "couverture-uneo85-novembre", caption: "Couverture Unéo85 Novembre" },
+			{ src: "src/assets/photos/Couverure - Le Grand Huit.png", alt: "couverure-le-grand-huit", caption: "Couverture Le Grand Huit" },
 		],
 	},
 	{
-		id: "05",
-		title: "Emails & Paiements",
-		desc: "Nodemailer, Stripe Checkout, abonnements récurrents, webhooks.",
-		modules: [
-			{
-				id: "t-16",
-				title: "Emails transactionnels",
-				description: "Envoi d'emails avec Nodemailer",
-			},
-			{
-				id: "t-17",
-				title: "Stripe Checkout",
-				description: "Intégration du paiement Stripe",
-			},
-			{
-				id: "t-26",
-				title: "Stripe Billing",
-				description: "Facturation récurrente avec Stripe",
-			},
-			{
-				id: "t-27",
-				title: "Webhook Stripe",
-				description: "Gestion des événements Stripe",
-			},
+		id: "Les mockups",
+		title: "Les mockups",
+		subtitle: "Visualisation des créations avant même de les valider",
+		images: [
+
+			{ src: "src/assets/photos/Mockup - Binome - Bureatique.png", alt: "mockup-binome-bureatique", caption: "Mockup Binome Bureatique" },
+			{ src: "src/assets/photos/Mockup - Binome - Mobile.png", alt: "mockup-binome-mobile", caption: "Mockup Binome Mobile" },
+			{ src: "src/assets/photos/Mockup - Binome - Polo Blanc.png", alt: "mockup-binome-polo-blanc", caption: "Mockup Binome Polo Blanc" },
+			{ src: "src/assets/photos/Mockup - Binome - Polo Teal.png", alt: "mockup-binome-polo-teal", caption: "Mockup Binome Polo Teal" },
+			{ src: "src/assets/photos/Mockup - Binome - Stand.png", alt: "mockup-binome-stand", caption: "Mockup Binome Stand" },
+			{ src: "src/assets/photos/Mockup - Binome - Véhicule.png", alt: "mockup-binome-vehicule", caption: "Mockup Binome Véhicule" },
+			{ src: "src/assets/photos/Mockup - Taff&co - Mobile.png", alt: "mockup-taffco-mobile", caption: "Mockup Taff&co Mobile" },
+			{ src: "src/assets/photos/Mockup - Unéo85 - Badge.png", alt: "mockup-uneo85-badge", caption: "Mockup Unéo85 Badge" },
+			{ src: "src/assets/photos/Mockup - Avo travux - Carte de visite.png", alt: "mockup-avo-travux-carte-de-visite", caption: "Mockup Avo travux Carte de visite" },
 		],
 	},
 	{
-		id: "06",
-		title: "Déploiement",
-		desc: "Backend, base de données et frontend sur Render.",
-		modules: [
-			{
-				id: "t-19",
-				title: "Déploiement Backend",
-				description: "Déployer sur Render",
-			},
-			{
-				id: "t-20",
-				title: "Déploiement BD",
-				description: "PostgreSQL sur Render",
-			},
-			{
-				id: "t-21",
-				title: "Déploiement Frontend",
-				description: "Frontend sur Render",
-			},
+		id: "Les réseaux sociaux",
+		title: "Les réseaux sociaux",
+		subtitle: "Contenus spécifiques aux réseaux sociaux ",
+		images: [
+			{ src: "src/assets/photos/Réseau - Avo travaux - Ouverture.png", alt: "reseau-avo-travaux-ouverture", caption: "Réseau Avo travaux Ouverture" },
+			{ src: "src/assets/photos/Réseau - Binome - Page Fb.png", alt: "reseau-binome-page-fb", caption: "Réseau Binome Page Fb" },
+			{ src: "src/assets/photos/Réseau - Cartable - Assemblé générale.jpg", alt: "reseau-cartable-assemblee-generale", caption: "Réseau Cartable Assemblé générale" },
+			{ src: "src/assets/photos/Réseau - Cartable - Joyeuses fetes.png", alt: "reseau-cartable-joyeuses-fetes", caption: "Réseau Cartable Joyeuses fetes" },
+			{ src: "src/assets/photos/Réseau - Cartable - Publi Noel.jpg", alt: "reseau-cartable-publi-noel", caption: "Réseau Cartable Publi Noel" },
+			{ src: "src/assets/photos/Réseau - Les petites Mains - Campagne Financement.jpg", alt: "reseau-les-petites-mains-campagne-financement", caption: "Réseau Les petites Mains Campagne Financement" },
+			{ src: "src/assets/photos/Réseau - Monts Plan - Publi 1.png", alt: "reseau-monts-plan-publi-1", caption: "Réseau Monts Plan Publi 1" },
+			{ src: "src/assets/photos/Réseau - Monts plan - Publi 2.png", alt: "reseau-monts-plan-publi-2", caption: "Réseau Monts plan Publi 2" },
+			{ src: "src/assets/photos/Réseau - Monts plan - Publi 3.png", alt: "reseau-monts-plan-publi-3", caption: "Réseau Monts plan Publi 3" },
+			{ src: "src/assets/photos/Réseau - Sare Photos  - Header.png", alt: "reseau-sare-photos-header", caption: "Réseau Sare Photos Header" },
+			{ src: "src/assets/photos/Reseau - Tealii - Header 1.png", alt: "reseau-tealii-header-1", caption: "Reseau Tealii Header 1" },
+			{ src: "src/assets/photos/Réseau - Tealii - Header 2.png", alt: "reseau-tealii-header-2", caption: "Réseau Tealii Header 2" },
+			{ src: "src/assets/photos/Réseau - Teet - Page Fb.JPG", alt: "reseau-teet-page-fb", caption: "Réseau Teet Page Fb" },
 		],
 	},
 	{
-		id: "07",
-		title: "Rôles & Organisations",
-		desc: "RBAC, organisations multi-users, permissions granulaires, plans.",
-		modules: [
-			{
-				id: "t-22",
-				title: "Système de rôles",
-				description: "RBAC - Contrôle d'accès basé sur les rôles",
-			},
-			{
-				id: "t-23",
-				title: "Organisations et Teams",
-				description: "Gestion d'organisations multi-utilisateurs",
-			},
-			{
-				id: "t-24",
-				title: "Permissions granulaires",
-				description: "Système de permissions fines",
-			},
-			{
-				id: "t-25",
-				title: "Plans et limites",
-				description: "Gestion des plans d'abonnement",
-			},
+		id: "Les autres supports",
+		title: "Les autres supports",
+		subtitle: "Tout ce qui sort des cases et s'adapte aux besoins",
+		images: [
+			{ src: "src/assets/photos/Panneau de chantier - Mon Plan.jpg", alt: "panneau-de-chantier-mon-plan", caption: "Panneau de chantier Mon Plan" },
+			{ src: "src/assets/photos/Plaquette - Tealii.png", alt: "plaquette-tealii", caption: "Plaquette Tealii" },
+			{ src: "src/assets/photos/Plaquette - Monts Plan.png", alt: "plaquette-monts-plan", caption: "Plaquette Monts Plan" },
+			{ src: "src/assets/photos/Cv - Gouyon Cédric.png", alt: "cv-gouyon-cedric", caption: "Cv Gouyon Cédric" },
 		],
 	},
-	{
-		id: "08",
-		title: "Expérience utilisateur",
-		desc: "Onboarding, notifications in-app, audit log, admin panel.",
-		modules: [
-			{
-				id: "t-28",
-				title: "Onboarding",
-				description: "Tutoriel de premiers pas",
-			},
-			{
-				id: "t-29",
-				title: "Notifications in-app",
-				description: "Système de notifications temps réel",
-			},
-			{
-				id: "t-30",
-				title: "Audit log",
-				description: "Historique des actions utilisateur",
-			},
-			{
-				id: "t-31",
-				title: "Admin panel",
-				description: "Interface d'administration",
-			},
-			{ id: "t-32", title: "Analytics", description: "Suivi et statistiques" },
-			{
-				id: "t-33",
-				title: "Rate limiting",
-				description: "Protection contre les abus",
-			},
-		],
-	},
-	{
-		id: "09",
-		title: "CMS & Blog",
-		desc: "Éditeur rich text, articles, SEO, slugs, multi-langue, prévisualisation.",
-		modules: [
-			{
-				id: "t-34",
-				title: "Structure CMS",
-				description: "Configuration du système de contenu",
-			},
-			{
-				id: "t-35",
-				title: "Éditeur rich text",
-				description: "Éditeur WYSIWYG pour contenu",
-			},
-			{
-				id: "t-36",
-				title: "Articles et Blog",
-				description: "Gestion du blog et articles",
-			},
-			{
-				id: "t-37",
-				title: "Pages statiques",
-				description: "Gestion des pages statiques",
-			},
-			{
-				id: "t-38",
-				title: "Médias et uploads",
-				description: "Gestion des images et fichiers",
-			},
-			{
-				id: "t-39",
-				title: "Catégories et Tags",
-				description: "Organisation du contenu",
-			},
-			{
-				id: "t-40",
-				title: "SEO et Slugs",
-				description: "Optimisation pour les moteurs de recherche",
-			},
-			{
-				id: "t-41",
-				title: "Multi-langue",
-				description: "Support de plusieurs langues",
-			},
-			{
-				id: "t-42",
-				title: "Prévisualisation",
-				description: "Aperçu avant publication",
-			},
-		],
-	},
+
 ];
 
-const stack = [
-	{ name: "React 18", cat: "Web", color: "#61DAFB" },
-	{ name: "React Native", cat: "Mobile", color: "#61DAFB" },
-	{ name: "Expo", cat: "Mobile", color: "#1B1B1B" },
-	{ name: "TypeScript", cat: "Language", color: "#3178C6" },
-	{ name: "Vite", cat: "Build", color: "#646CFF" },
-	{ name: "React Router 7", cat: "Routing", color: "#F44250" },
-	{ name: "Express", cat: "Backend", color: "#68A063" },
-	{ name: "PostgreSQL", cat: "Database", color: "#336791" },
-	{ name: "JWT", cat: "Auth", color: "#D63AFF" },
-	{ name: "Stripe", cat: "Payments", color: "#635BFF" },
-	{ name: "Nodemailer", cat: "Email", color: "#0EA5E9" },
-	{ name: "Biome", cat: "Tooling", color: "#60CFAC" },
-	{ name: "Zod", cat: "Validation", color: "#F97316" },
-	{ name: "Render", cat: "Deploy", color: "#46E3B7" },
-];
+interface LightboxProps {
+	images: RealisationImage[];
+	currentIndex: number;
+	onClose: () => void;
+	onPrev: () => void;
+	onNext: () => void;
+}
 
-const prereqs = [
-	{
-		icon: "🌐",
-		label: "Google Chrome",
-		note: "Navigateur principal pour le dev",
-		type: "app",
-	},
-	{ icon: "📝", label: "VS Code", note: "Éditeur recommandé", type: "app" },
-	{
-		icon: "🟢",
-		label: "Node.js 20+",
-		note: "LTS — vérifie avec node --version",
-		type: "cmd",
-	},
-	{ icon: "📦", label: "pnpm", note: "npm install -g pnpm", type: "cmd" },
-	{ icon: "🔀", label: "Git", note: "Vérifie avec git --version", type: "cmd" },
-	{
-		icon: "🐳",
-		label: "Docker Desktop",
-		note: "Pour PostgreSQL en local",
-		type: "app",
-	},
-	{
-		icon: "🐘",
-		label: "PostgreSQL 15+",
-		note: "Via Docker ou installation directe",
-		type: "cmd",
-	},
-	{
-		icon: "🗄️",
-		label: "TablePlus",
-		note: "Client GUI pour la base de données",
-		type: "app",
-	},
-	{
-		icon: "📐",
-		label: "Biome",
-		note: "Extension VS Code — linting & formatting",
-		type: "ext",
-	},
-];
-
-function ChapterAccordion({ chapter }: { chapter: Chapter }) {
-	const [open, setOpen] = useState(false);
+function Lightbox({ images, currentIndex, onClose, onPrev, onNext }: LightboxProps) {
+	const img = images[currentIndex];
 
 	return (
-		<article className={`hp-chapter ${open ? "hp-chapter--open" : ""}`}>
-			<header>
-				<button className="hp-chapter__trigger" onClick={() => setOpen(!open)} type="button" aria-expanded={open} aria-controls={`chapter-${chapter.id}`}>
-					<span className="hp-chapter__num">{chapter.id}</span>
-					<div className="hp-chapter__header-info">
-						<h3>{chapter.title}</h3>
-						<p>{chapter.desc}</p>
-					</div>
-					<div className="hp-chapter__header-actions">
-						<span className="hp-chapter__count">
-							{chapter.modules.length} module
-							{chapter.modules.length > 1 ? "s" : ""}
-						</span>
-						<span className="hp-chapter__chevron">{open ? "▲" : "▼"}</span>
-					</div>
-				</button>
-			</header>
-			{open && (
-				<section id={`chapter-${chapter.id}`} className="hp-chapter__content">
-					{chapter.modules.map((module) => (
-						<article className="hp-module" key={module.id}>
-							<span className="hp-module__id">{module.id}</span>
-							<div className="hp-module__info">
-								<h4>{module.title}</h4>
-								<p>{module.description}</p>
+		<div className="hp-lightbox" onClick={onClose} role="dialog" aria-modal="true" aria-label="Aperçu image">
+			<button type="button" className="hp-lightbox__close" onClick={onClose} aria-label="Fermer">
+				✕
+			</button>
+			<button
+				type="button"
+				className="hp-lightbox__nav hp-lightbox__nav--prev"
+				onClick={(e) => { e.stopPropagation(); onPrev(); }}
+				aria-label="Image précédente"
+			>
+				&#8592;
+			</button>
+			<figure className="hp-lightbox__content" onClick={(e) => e.stopPropagation()}>
+				<img src={img.src} alt={img.alt} className="hp-lightbox__img" />
+				{img.caption && <figcaption className="hp-lightbox__caption">{img.caption}</figcaption>}
+				<span className="hp-lightbox__counter">{currentIndex + 1} / {images.length}</span>
+			</figure>
+			<button
+				type="button"
+				className="hp-lightbox__nav hp-lightbox__nav--next"
+				onClick={(e) => { e.stopPropagation(); onNext(); }}
+				aria-label="Image suivante"
+			>
+				&#8594;
+			</button>
+		</div>
+	);
+}
+
+function Gallery({ section }: { section: RealisationSection }) {
+	const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+	const openLightbox = (index: number) => setLightboxIndex(index);
+	const closeLightbox = () => setLightboxIndex(null);
+	const prevImage = () => setLightboxIndex((i) => (i !== null ? (i - 1 + section.images.length) % section.images.length : null));
+	const nextImage = () => setLightboxIndex((i) => (i !== null ? (i + 1) % section.images.length : null));
+
+	return (
+		<section className="hp-realisation" id={section.id}>
+			<div className="hp-realisation__header">
+				<div className="hp-realisation__header-noise" aria-hidden="true" />
+				<div className="hp-realisation__header-grid" aria-hidden="true" />
+				<div className="hp-realisation__header-orbs" aria-hidden="true">
+					<div className="hp-realisation__orb hp-realisation__orb--1" />
+					<div className="hp-realisation__orb hp-realisation__orb--2" />
+				</div>
+				<div className="hp-realisation__header-inner">
+					<h2 className="hp-realisation__title">{section.title}</h2>
+					<p className="hp-realisation__subtitle">{section.subtitle}</p>
+				</div>
+			</div>
+
+			<div className="hp-gallery">
+				{section.images.map((img, idx) => (
+					<figure
+						key={img.alt}
+						className="hp-gallery__item"
+						onClick={() => openLightbox(idx)}
+						role="button"
+						tabIndex={0}
+						aria-label={`Ouvrir ${img.caption ?? img.alt}`}
+						onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") openLightbox(idx); }}
+					>
+						<div className="hp-gallery__img-wrap">
+							<img
+								src={img.src}
+								alt={img.alt}
+								className="hp-gallery__img"
+								loading="lazy"
+								onError={(e) => {
+									(e.currentTarget as HTMLImageElement).style.display = "none";
+									const placeholder = e.currentTarget.nextElementSibling as HTMLElement;
+									if (placeholder) placeholder.style.display = "flex";
+								}}
+							/>
+							<div className="hp-gallery__placeholder" style={{ display: "none" }}>
+								<span>🖼️</span>
+								<span>{img.alt}</span>
 							</div>
-						</article>
-					))}
-				</section>
+							<div className="hp-gallery__overlay" aria-hidden="true">
+								<span className="hp-gallery__zoom">🔍</span>
+							</div>
+						</div>
+						{img.caption && <figcaption className="hp-gallery__caption">{img.caption}</figcaption>}
+					</figure>
+				))}
+			</div>
+
+			{lightboxIndex !== null && (
+				<Lightbox
+					images={section.images}
+					currentIndex={lightboxIndex}
+					onClose={closeLightbox}
+					onPrev={prevImage}
+					onNext={nextImage}
+				/>
 			)}
-		</article>
+		</section>
 	);
 }
 
 function HomePage() {
-	const totalModules = chapters.reduce((acc, p) => acc + p.modules.length, 0);
+	const [scrollY, setScrollY] = useState(0);
+
+	useEffect(() => {
+		const handleScroll = () => setScrollY(window.scrollY);
+		window.addEventListener("scroll", handleScroll, { passive: true });
+		return () => window.removeEventListener("scroll", handleScroll);
+	}, []);
 
 	return (
 		<main className="hp-home">
-			{/* HERO SECTION */}
 			<section className="hp-hero">
 				<div className="hp-hero__noise" aria-hidden="true" />
-				<div className="hp-hero__grid" aria-hidden="true" />
-				<header className="hp-hero__inner">
-					<span className="hp-badge">{constants.APP_NAME} · Monorepo · Web · Mobile · Full-stack</span>
-					<h1 className="hp-hero__title">
-						<span className="hp-hero__title-accent">{constants.APP_NAME}</span>
-						<br />
-						Le monorepo <br />
-						Web & Mobile
-						<br />
-						dont on a besoin.
-					</h1>
-					<p className="hp-hero__sub">Un monorepo SaaS que tu construis toi-même, étape par étape, pour comprendre en profondeur chaque brique jusqu'à une mise en production complète.</p>
-					<nav className="hp-hero__cta">
-						<Link to="/register" className="hp-btn hp-btn--primary">
-							Créer mon compte
-						</Link>
-						<a href="#steps" className="hp-btn hp-btn--ghost">
-							Voir les étapes
-						</a>
-					</nav>
-					<dl className="hp-hero__stats">
-						<div className="hp-stat">
-							<dt className="hp-stat__lbl">Fiches</dt>
-							<dd className="hp-stat__num">{totalModules}</dd>
-						</div>
-						<span className="hp-stat__sep" aria-hidden="true" />
-						<div className="hp-stat">
-							<dt className="hp-stat__lbl">Chapitres</dt>
-							<dd className="hp-stat__num">{chapters.length}</dd>
-						</div>
-						<span className="hp-stat__sep" aria-hidden="true" />
-						<div className="hp-stat">
-							<dt className="hp-stat__lbl">Codebase</dt>
-							<dd className="hp-stat__num">1</dd>
-						</div>
-					</dl>
-				</header>
-			</section>
-
-			{/* ABOUT SECTION */}
-			<section className="hp-about">
-				<header className="hp-section-inner">
-					<p className="hp-eyebrow">C'est quoi {constants.APP_NAME} ?</p>
-					<h2>Pas un template. Un parcours complet.</h2>
-				</header>
-				<div className="hp-section-inner">
-					<div className="hp-about__text">
-						<p>{constants.APP_NAME} est un monorepo SaaS construit brique par brique, en suivant une progression structurée et logique. Chaque module guide l'implémentation complète du code jusqu'à son intégration dans l'ensemble.</p>
-						<p>L'objectif n'est pas uniquement d'écrire du code, mais de comprendre comment chaque couche s'articule (frontend, backend, base de données, infrastructure) et pourquoi elle est conçue ainsi.</p>
-						<p>Au fil des chapitres, une application SaaS complète est construite : authentification sécurisée, gestion des données, paiements Stripe, rôles et permissions, CMS et déploiement en production. Chaque élément est conçu pour fonctionner ensemble dans un environnement réel.</p>
-						<p>
-							À la fin du parcours, une base SaaS propre, structurée et éprouvée est obtenue, avec un launcher unique simulant un environnement de production en local (Docker, base de données, build, serveur) afin de garantir un contexte cohérent du début à la fin. Un vérificateur valide l'intégrité complète du
-							monorepo avec génération d'un rapport d'audit.
-						</p>
-						<p>Le monorepo {constants.APP_NAME} est directement réutilisable et s'adapte immédiatement à de futurs projets.</p>
-					</div>
-					<div className="hp-about__cards">
-						{[
-							{
-								icon: "🏗️",
-								title: "Architecture first",
-								desc: "Monorepo npm workspaces : packages web, mobile, backend et shared typés.",
-							},
-							{
-								icon: "🔐",
-								title: "Auth prod-ready",
-								desc: "JWT, sessions, OAuth GitHub, routes protégées, RBAC.",
-							},
-							{
-								icon: "💳",
-								title: "Stripe intégré",
-								desc: "Checkout, abonnements récurrents, webhooks et gestion de plans.",
-							},
-							{
-								icon: "🚀",
-								title: "Deploy dès le départ",
-								desc: "Render pour le backend, la BD et le frontend. CI prête à l'emploi.",
-							},
-						].map((c) => (
-							<article className="hp-feature-card" key={c.title}>
-								<span className="hp-feature-card__icon" aria-hidden="true">
-									{c.icon}
-								</span>
-								<h3>{c.title}</h3>
-								<p>{c.desc}</p>
-							</article>
-						))}
-					</div>
+				<div className="hp-hero__grid" aria-hidden="true" style={{ transform: `translateY(${scrollY * 0.5}px)` }} />
+				<div className="hp-hero__orbs" aria-hidden="true">
+					<div className="hp-hero__orb hp-hero__orb--1" />
+					<div className="hp-hero__orb hp-hero__orb--2" />
+					<div className="hp-hero__orb hp-hero__orb--3" />
 				</div>
-			</section>
-
-			{/* PROGRAM SECTION */}
-			<section className="hp-steps" id="steps">
-				<header className="hp-section-inner">
-					<p className="hp-eyebrow">Roadmap</p>
-					<h2>Le programme</h2>
-					<p className="hp-steps__sub">
-						{totalModules} modules regroupés en {chapters.length} chapitres. Clique sur un chapitre pour voir le contenu.
+				<header className="hp-hero__inner">
+					<h1 className="hp-hero__title">
+						On a tous besoin de
+						<br />
+						<span className="hp-hero__title-accent">communiquer</span>
+						<br />
+						pour valoriser son image
+					</h1>
+					<p className="hp-hero__sub">
+						Passionné de graphisme et autodidacte actif, J'adore donner vie aux idées à travers la conception d’identités visuelles et de supports print et digitaux. Que ce soit pour un logo, une carte de visite, un flyer ou des publications pour les réseaux sociaux, je crée des visuels en fonction des besoins et des envies. De la couverture de catalogue aux objets publicitaires, j'aime mettre mon énergie pour booster et faire briller la communication.
 					</p>
 				</header>
-				<div className="hp-section-inner">
-					<div className="hp-chapters">
-						{chapters.map((chapter) => (
-							<ChapterAccordion key={chapter.id} chapter={chapter} />
-						))}
-					</div>
-				</div>
 			</section>
 
-			{/* PREREQUISITES SECTION */}
-			<section className="hp-prereq">
-				<div className="hp-section-inner hp-section-inner--narrow">
-					<header>
-						<p className="hp-eyebrow">Avant de commencer</p>
-						<h2>Installation requise</h2>
-					</header>
-					<dl className="hp-prereq__grid">
-						{prereqs.map((p) => (
-							<div className="hp-prereq__item" key={p.label}>
-								<dt className="hp-prereq__label">
-									<span className="hp-prereq__icon" aria-hidden="true">
-										{p.icon}
-									</span>
-									<span className="hp-prereq__name">{p.label}</span>
-								</dt>
-								<dd className="hp-prereq__description">{p.note}</dd>
-								<span className={`hp-prereq__tag hp-prereq__tag--${p.type}`}>{p.type === "cmd" ? "CLI" : p.type === "ext" ? "Extension" : "App"}</span>
-							</div>
-						))}
-					</dl>
-					<aside className="hp-prereq__note">
-						<p>
-							Le reste est fourni dans le monorepo ou accessible en ligne.
-							<br /> <br />
-							Ce monorepo est optimisé pour un environnement Windows.
-							<br /> <br />
-							Certaines fonctionnalités peuvent avoir un comportement différent ou ne pas être fonctionnelles sur macOS/Linux.
-						</p>
-					</aside>
-				</div>
-			</section>
+			{realisationSections.map((section) => (
+				<Gallery key={section.id} section={section} />
+			))}
 
-			{/* TECH STACK SECTION */}
-			<section className="hp-stack">
-				<div className="hp-section-inner">
-					<header>
-						<p className="hp-eyebrow">Stack technique</p>
-						<h2>Des technos qui tiennent en production</h2>
-					</header>
-					<ul className="hp-stack__grid">
-						{stack.map((s) => (
-							<li key={s.name}>
-								<span className="hp-stack__pill" style={{ "--accent": s.color } as React.CSSProperties}>
-									<span className="hp-stack__pill-cat">{s.cat}</span>
-									<span className="hp-stack__pill-name">{s.name}</span>
-								</span>
-							</li>
-						))}
-					</ul>
-				</div>
-			</section>
-
-			{/* CTA FINAL SECTION */}
-			<section className="hp-cta">
+			<section className="hp-cta" id="contact">
 				<div className="hp-cta__noise" aria-hidden="true" />
+				<div className="hp-cta__glow" aria-hidden="true" />
 				<div className="hp-section-inner hp-section-inner--narrow hp-cta__inner">
 					<header>
-						<h2>Commencer la construction dès maintenant.</h2>
-						<p>Créer un compte pour accéder à l'ensemble des modules de construction, suivre la progression et recevoir les mises à jour.</p>
+						<h2>Mon travail ne s'arrête pas qu'à une seule solution graphique.</h2>
+						<span className="hp-hero__title-accent">
+  Découvrez aussi mon second univers :{' '}
+  <a
+    href="https://gouyon-cedric.onrender.com/"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="hero-link"
+  >
+    Le développement web
+  </a>
+</span>
 					</header>
-					<nav>
-						<Link to="/register" className="hp-btn hp-btn--primary hp-btn--lg">
-							Créer un compte
-						</Link>
-					</nav>
-					<small className="hp-cta__fine">Inscription gratuite. Sans carte bancaire. Et pour toujours.</small>
 				</div>
 			</section>
 		</main>

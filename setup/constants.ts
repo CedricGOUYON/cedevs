@@ -1,7 +1,7 @@
 // import { constants } from "../../../../setup/constants";
 export const constants = {
-	ROOT_FOLDER_NAME: "cedevs",
-	APP_NAME: "Cedevs",
+	ROOT_FOLDER_NAME: "Créa graphic",
+	APP_NAME: "Créa graphic",
 	DEFAULT_USER_NAME: "utilisateur",
 	DEFAULT_AVATAR: "/images/avatar_profil.png",
 	ROUTE_HOME: "/",
