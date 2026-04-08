@@ -8,7 +8,9 @@
 		"dev:server": "npm run dev -w server",
 		"lint": "biome lint .",
 		"fix": "biome lint --write . && biome format --write .",
-		"format": "biome format --write ."
+		"format": "biome format --write .",
+		"db:init": "npx tsx server/src/database/init-db.ts",
+		"liveApp": "npx tsx setup/liveApp.ts"
 	},
 	"type": "module",
 	"devDependencies": {
