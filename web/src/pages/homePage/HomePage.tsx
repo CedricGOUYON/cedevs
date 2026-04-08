@@ -20,7 +20,7 @@ const realisationSections: RealisationSection[] = [
 		title: "Les logos",
 		subtitle: "Identités visuelles qui marquent les esprits",
 		images: [
-			{ src: "src/assets/photos/Logo - Monts Plan.jpg", alt: "logo-monts-plan", caption: "Logo Monts Plan" },
+			{ src: "/photos/Logo - Monts Plan.jpg", alt: "logo-monts-plan", caption: "Logo Monts Plan" },
 			{ src: "src/assets/photos/Logo - Cote & Villa.png", alt: "logo-cote-villa", caption: "Logo Cote & Villa" },
 			{ src: "src/assets/photos/Logo - Atelier Taka.png", alt: "logo-atelier-taka", caption: "Logo Atelier Taka" },
 			{ src: "src/assets/photos/Logo - les petites Mains.png", alt: "logo-les-petites-mains", caption: "Logo les petites Mains" },
