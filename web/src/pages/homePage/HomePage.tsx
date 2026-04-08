@@ -111,7 +111,7 @@ const realisationSections: RealisationSection[] = [
 			{ src: "/photos/Réseau - Sare Photos  - Header.png", alt: "reseau-sare-photos-header", caption: "Réseau Sare Photos Header" },
 			{ src: "/photos/Reseau - Tealii - Header 1.png", alt: "reseau-tealii-header-1", caption: "Reseau Tealii Header 1" },
 			{ src: "/photos/Réseau - Tealii - Header 2.png", alt: "reseau-tealii-header-2", caption: "Réseau Tealii Header 2" },
-			{ src: "/photos/Réseau - Teet - Page Fb.JPG", alt: "reseau-teet-page-fb", caption: "Réseau Teet Page Fb" },
+			{ src: "/photos/Réseau - Teet - Page Fb.jpg", alt: "reseau-teet-page-fb", caption: "Réseau Teet Page Fb" },
 		],
 	},
 	{
