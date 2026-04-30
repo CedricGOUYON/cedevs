@@ -1,0 +1,74 @@
+.nf {
+	position: relative;
+	min-height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+	overflow: hidden;
+}
+
+.nf__grid {
+	position: absolute;
+	inset: 0;
+	background-image: linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+	background-size: 56px 56px;
+	pointer-events: none;
+	mask-image: radial-gradient(ellipse 90% 80% at 50% 50%, black 30%, transparent 100%);
+}
+
+.nf__inner {
+	position: relative;
+	text-align: center;
+	padding: 2rem;
+}
+
+.nf__code {
+	display: block;
+	font-family: var(--font-mono);
+	font-size: clamp(6rem, 20vw, 12rem);
+	font-weight: 800;
+	line-height: 1;
+	letter-spacing: -0.05em;
+	color: rgba(255, 255, 255, 0.12);
+	margin-bottom: -1rem;
+	user-select: none;
+}
+
+.nf__title {
+	font-size: clamp(1.8rem, 5vw, 2.8rem);
+	font-weight: 800;
+	letter-spacing: -0.03em;
+	color: var(--white);
+	margin: 0 0 1rem;
+	line-height: 1.1;
+}
+
+.nf__sub {
+	font-size: 1rem;
+	color: rgba(255, 255, 255, 0.65);
+	margin: 0 0 2.5rem;
+	line-height: 1.6;
+}
+
+.nf__btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+	padding: 0.8rem 1.8rem;
+	background: var(--white);
+	color: var(--accent);
+	font-size: 0.95rem;
+	font-weight: 700;
+	font-family: var(--font-sans);
+	text-decoration: none;
+	border-radius: var(--radius);
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+	transition: all 0.18s ease;
+}
+
+.nf__btn:hover {
+	background: var(--bg);
+	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+	transform: translateY(-2px);
+}
